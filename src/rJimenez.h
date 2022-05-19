@@ -12,6 +12,7 @@
 #define TAM_INT 20
 
 #include "censista.h"
+#include "zona.h"
 
 
 
@@ -40,8 +41,7 @@ int darAltaCensista(Censista *listaCensista, int tamanioDelArray, char mensajeNo
 					char mensajeErrorDia[TAM_STR], char mensajeExitoDia [TAM_STR], char mensajeMes [TAM_STR], char mensajeErrorMes [TAM_STR],
 					char mensajeExitoMes [TAM_STR], char mensajeAnio [TAM_STR], char mensajeErrorAnio [TAM_STR], char mensajeExitoAnio [TAM_STR],
 					char mensajeEdad [TAM_STR], char mensajeErrorEdad [TAM_STR], char mensajeExitoEdad [TAM_STR], char mensajeDireccion [TAM_STR],
-					char mensajeErrorDireccion [TAM_STR], char mensajeExitoDireccion [TAM_STR], char mensajeCargaCompleta [TAM_STR], int id,
-					int minimo, int maximo);
+					char mensajeCargaCompleta [TAM_STR], int id, int minimo, int maximo);
 
 
 int modificarCensista(Censista *listaCensista, int tamanioDelArray, char mensajeId [TAM_STR], char mensajeErrorId [TAM_STR], char mensajeExitoId [TAM_STR],
@@ -67,9 +67,20 @@ int modificarAnio (char mensajeModificar [TAM_STR], char mensajeErrorModificar [
 int modificarEdad (char mensajeModificar [TAM_STR], char mensajeErrorModificar [TAM_STR], char mensajeExitoModificar [TAM_STR], Censista *censista,
 					int minimo, int maximo);
 
-int modificarDireccion(char mensajeModificar [TAM_STR], char mensajeErrorModificar [TAM_STR], char mensajeExitoModificar [TAM_STR], Censista *censista);
+int modificarDireccion(char mensajeModificar [TAM_STR], Censista *censista);
 
 int darBajaCensista (Censista *listaCensista, int tamanioDelArray, char mensajeId [TAM_STR], char mensajeErrorId [TAM_STR], char mensajeExitoId [TAM_STR],
 					char mensajeErrorBaja [TAM_STR], char mensajeExitoBaja [TAM_STR], char mensajeErrorIdNoEncontrado [TAM_STR]);
+
+int buscarLibreZona(Zona *listaZona, int tamanioDelArray);
+
+int darAltaZona (Zona *listaZona, int tamanioDelArray, char mensajeRadio [TAM_STR], char mensajeLocalidad [TAM_STR], char mensajeErrorLocalidad [TAM_STR],
+			char mensajeExitoLocalidad [TAM_STR], char mensajeEstado [TAM_STR], char mensajeErrorEstado [TAM_STR], char mensajeExitoEstado [TAM_STR],
+			char mensajeCargaZonaCompleta [TAM_STR], int id);
+
+int asignarZona(Zona *listaZona, int tamanioArrayZona, Censista *listaCensista, int tamanioArrayCensista, char mensajeZona [TAM_STR],
+		char mensajeErrorZona [TAM_STR], char mensajeExitoZona [TAM_STR], char mensajeCensista [TAM_STR], char mensajeErrorCensista [TAM_STR],
+		char mensajeExitoCensista [TAM_STR]);
+
 
 #endif /* RJIMENEZ_H_ */

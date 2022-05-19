@@ -64,7 +64,7 @@ void mostrarCensistas(Censista listaCensista [TAMANIO_ARRAY_CENSISTAS])
 
 	for(i = 0; i < TAMANIO_ARRAY_CENSISTAS; i++)
 	{
-		if(listaCensista[i].isEmpty == 0)
+		if(listaCensista[i].isEmpty == 0 && listaCensista[i].estado != 2)
 		{
 			mostrarUnCensista(listaCensista[i]);
 		}
@@ -79,5 +79,25 @@ void mostrarUnCensista(Censista censista)
 	printf("%s\n", censista.apellido);
 	printf("%d/%d/%d\n", censista.fechaDeNacimiento.dia, censista.fechaDeNacimiento.mes, censista.fechaDeNacimiento.anio);
 	printf("%d\n", censista.edad);
-	printf("%d\n", censista.direccion);
+	printf("%s\n", censista.direccion);
+}
+
+
+int buscarCensistaPorId(Censista *listaCensista, int tamanioArrayCensista, int idCensista)
+{
+	int retorno;
+	int i;
+
+	retorno = -1;
+
+	for(i = 0; i < tamanioArrayCensista; i++)
+	{
+		if(listaCensista[i].id == idCensista && listaCensista[i].isEmpty == 0)
+		{
+			retorno = i;
+			break;
+		}
+	}
+
+	return retorno;
 }

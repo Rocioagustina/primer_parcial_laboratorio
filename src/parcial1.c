@@ -40,14 +40,12 @@
 #define MENSAJE_EXITO_APELLIDO "El apellido ha sido ingresado exitosamente \n"
 #define MENSAJE_ERROR_EDAD "Error en el ingreso de la edad \n"
 #define MENSAJE_EXITO_EDAD "La edad ha sido ingresada exitosamente \n"
-#define MENSAJE_ERROR_DIRECCION "Error en el ingreso de la direccion \n"
-#define MENSAJE_EXITO_DIRECCION "La direccion ha sido ingresada exitosamente \n"
-#define ALTA_COMPLETA "El alta del pasajero ha sido completada exitosamente \n"
-#define MENSAJE_ID "Ingrese el ID del pasajero: \n"
+#define ALTA_COMPLETA "El alta del censista ha sido completada exitosamente \n"
+#define MENSAJE_ID "Ingrese el ID del censista: \n"
 #define MENSAJE_ERROR_ID "Error en el ingreso del ID \n"
 #define MENSAJE_EXITO_ID "El ID fue ingresado correctamente \n"
 #define MENSAJE_ERROR_BAJA "Error en la baja, no pudo realizarse \n"
-#define MENSAJE_EXITO_BAJA "La baja del pasajero ha sido completada exitosamente \n"
+#define MENSAJE_EXITO_BAJA "La baja del censista ha sido completada exitosamente \n"
 #define MENSAJE_ID_NO_ENCONTRADO "ID no encontrado \n"
 #define MENSAJE_PEDIR_OPCION "Ingrese una opcion: \n"
 #define MENSAJE_MODIFICAR "Ingrese el dato que desea modificar: \n"
@@ -84,6 +82,23 @@
 #define MENSAJE_EXITO_MES "El mes de nacimiento ha sido ingresado exitosamente \n"
 #define MENSAJE_ERROR_ANIO "Error en el ingreso del año de nacimiento \n"
 #define MENSAJE_EXITO_ANIO "El año de nacimiento ha sido ingresado exitosamente \n"
+#define TAM_ZONA 15
+#define MENSAJE_RADIO "Ingrese la cuadra y altura donde comienza el radio \n"
+#define MENSAJE_LOCALIDAD "Ingrese el numero de localidad \n"
+#define MENSAJE_ERROR_LOCALIDAD "Error en el ingreso del numero de localidad \n"
+#define MENSAJE_EXITO_LOCALIDAD "El numero de localidad ha sido ingresado exitosamente \n"
+#define MENSAJE_ESTADO "Ingrese el estado de la zona \n"
+#define MENSAJE_ERROR_ESTADO "Error en el ingreso del estado de la zona \n"
+#define MENSAJE_EXITO_ESTADO "El estado de la zona ha sido ingresado exitosamente \n"
+#define MENSAJE_CARGA_COMPLETA "La zona ha sido completada exitosamente \n"
+#define MENSAJE_ZONA "Ingrese la zona \n"
+#define MENSAJE_ERROR_ZONA "Error en el ingreso de la zona \n"
+#define MENSAJE_EXITO_ZONA "La zona ha sido ingresada exitosamente \n"
+#define MENSAJE_CENSISTA "Ingrese el censista \n"
+#define MENSAJE_ERROR_CENSISTA "Error en el ingreso del censista \n"
+#define MENSAJE_EXITO_CENSISTA "El censista ha sido ingresado exitosamente"
+
+
 
 
 
@@ -93,11 +108,14 @@ int main(void) {
 		setbuf(stdout, NULL);
 		int opcion;
 		int id;
+		int idZona;
 		Censista arrayCensistas [TAM_ARRAY_CENSISTAS];
 		estadoCensista arrayEstadoCensistas [TAM_ESTADOS_CENSISTAS];
 		estadoZona arrayEstadoZonas [TAM_ESTADOS_ZONAS];
+		Zona arrayZona [TAM_ZONA];
 
 		id = 1;
+		idZona = 1;
 
 		inicializarCensista(arrayCensistas, TAM_ARRAY_CENSISTAS);
 		inicializarEstadoCensista(arrayEstadoCensistas);
@@ -124,8 +142,8 @@ int main(void) {
 				if(darAltaCensista(arrayCensistas, TAM_ARRAY_CENSISTAS, PEDIR_NOMBRE_CENSISTA, MENSAJE_ERROR_NOMBRE, MENSAJE_EXITO_NOMBRE,
 					MENSAJE_ERROR_ESPACIO, PEDIR_APELLIDO_CENSISTA, MENSAJE_ERROR_APELLIDO, MENSAJE_EXITO_APELLIDO, PEDIR_DIA_DE_NACIMIENTO,
 					MENSAJE_ERROR_DIA, MENSAJE_EXITO_DIA, PEDIR_MES_DE_NACIMIENTO, MENSAJE_ERROR_MES, MENSAJE_EXITO_MES, PEDIR_ANIO_DE_NACIMIENTO,
-					MENSAJE_ERROR_ANIO, MENSAJE_EXITO_ANIO, PEDIR_EDAD, MENSAJE_ERROR_EDAD, MENSAJE_EXITO_EDAD, PEDIR_DIRECCION, MENSAJE_ERROR_DIRECCION,
-					MENSAJE_EXITO_DIRECCION, ALTA_COMPLETA, id, 0, 4) == 0)
+					MENSAJE_ERROR_ANIO, MENSAJE_EXITO_ANIO, PEDIR_EDAD, MENSAJE_ERROR_EDAD, MENSAJE_EXITO_EDAD, PEDIR_DIRECCION, ALTA_COMPLETA, id,
+					0, 4) == 0)
 				{
 					id++;
 				}
@@ -142,12 +160,24 @@ int main(void) {
 				break;
 			case 3:
 				darBajaCensista (arrayCensistas, TAMANIO_ARRAY_CENSISTAS, MENSAJE_ID, MENSAJE_ERROR_ID, MENSAJE_EXITO_ID, MENSAJE_ERROR_BAJA,
-						MENSAJE_ERROR_BAJA, MENSAJE_ID_NO_ENCONTRADO);
+						MENSAJE_EXITO_BAJA, MENSAJE_ID_NO_ENCONTRADO);
 				break;
-			case 4:
-
+			case 4:if(darAltaZona(arrayZona, TAM_ZONA, MENSAJE_RADIO, MENSAJE_LOCALIDAD, MENSAJE_ERROR_LOCALIDAD, MENSAJE_EXITO_LOCALIDAD, MENSAJE_ESTADO,
+					MENSAJE_ERROR_ESTADO, MENSAJE_EXITO_ESTADO, MENSAJE_CARGA_COMPLETA, idZona) == 0)
+					{
+						idZona++;
+					}
 				break;
-			case 5: printf(FIN_DEL_PROCESO);
+			case 5: asignarZona(arrayZona, TAM_ZONA, arrayCensistas, TAMANIO_ARRAY_CENSISTAS, MENSAJE_ZONA, MENSAJE_ERROR_ZONA, MENSAJE_EXITO_ZONA,
+					MENSAJE_CENSISTA, MENSAJE_ERROR_CENSISTA, MENSAJE_EXITO_CENSISTA);
+				break;
+			case 6:
+				break;
+			case 7:
+				break;
+			case 8:
+				break;
+			case 9: printf(FIN_DEL_PROCESO);
 				break;
 			default:
 				printf(OPCION_INVALIDA);

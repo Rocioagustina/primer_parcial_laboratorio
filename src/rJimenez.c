@@ -12,7 +12,7 @@
 #include <string.h>
 #include "rJimenez.h"
 #include "censista.h"
-
+#include "zona.h"
 
 
 #define TAM_STR 512
@@ -21,11 +21,11 @@
 #define ELECCION_DE_MODIFICACION "¿Que dato desea modificar? \n\n"
 #define MODIFICAR_NOMBRE "1. Nombre \n"
 #define MODIFICAR_APELLIDO "2. Apellido \n"
-#define MODIFICAR_DIA_NACIMIENTO "4. Dia de nacimiento \n"
-#define MODIFICAR_MES_DE_NACIMIENTO "5. Mes de nacimiento \n"
-#define MODIFICAR_ANIO_DE_NACIMIENTO "6. Año de nacimiento \n"
-#define MODIFICAR_EDAD "7. Edad \n"
-#define MODIFICAR_DIRECCION "8. Direccion \n"
+#define MODIFICAR_DIA_NACIMIENTO "3. Dia de nacimiento \n"
+#define MODIFICAR_MES_DE_NACIMIENTO "4. Mes de nacimiento \n"
+#define MODIFICAR_ANIO_DE_NACIMIENTO "5. Año de nacimiento \n"
+#define MODIFICAR_EDAD "6. Edad \n"
+#define MODIFICAR_DIRECCION "7. Direccion \n"
 
 
 /// @fn int pedirFloat(char[], char[], char[], float*)
@@ -158,7 +158,7 @@ int validarNombre (char nombreSinValidar [TAM_NOMBRE])
 	return retorno;
 }
 
-/*
+
 /// @fn int pedirCodigo(char[], char[], char[], char*)
 /// @brief Pide el codigo del vuelo
 ///
@@ -169,16 +169,19 @@ int validarNombre (char nombreSinValidar [TAM_NOMBRE])
 int pedirCodigo (char mensaje [TAM_STR], char *pResultadoCodigo)
 {
 	int retorno;
+	char buffer [256];
 
 	retorno = 0;
 
 	printf(mensaje);
-	scanf("%s", pResultadoCodigo);
+	//fflush(stdin);
+	scanf("%s", buffer);
+	strcpy(pResultadoCodigo, buffer);
 
 	return retorno;
 }
 
-*/
+
 /// @fn int pedirInt(char[], char[], char[], int*, int, int)
 /// @brief Pide un numero entero
 ///
@@ -310,8 +313,7 @@ int darAltaCensista(Censista *listaCensista, int tamanioDelArray, char mensajeNo
 					char mensajeErrorDia[TAM_STR], char mensajeExitoDia [TAM_STR], char mensajeMes [TAM_STR], char mensajeErrorMes [TAM_STR],
 					char mensajeExitoMes [TAM_STR], char mensajeAnio [TAM_STR], char mensajeErrorAnio [TAM_STR], char mensajeExitoAnio [TAM_STR],
 					char mensajeEdad [TAM_STR], char mensajeErrorEdad [TAM_STR], char mensajeExitoEdad [TAM_STR], char mensajeDireccion [TAM_STR],
-					char mensajeErrorDireccion [TAM_STR], char mensajeExitoDireccion [TAM_STR], char mensajeCargaCompleta [TAM_STR], int id,
-					int minimo, int maximo)
+					char mensajeCargaCompleta [TAM_STR], int id, int minimo, int maximo)
 {
 	int retorno;
 	Censista aux;
@@ -336,7 +338,7 @@ int darAltaCensista(Censista *listaCensista, int tamanioDelArray, char mensajeNo
 						{
 							if(pedirInt(mensajeEdad, mensajeErrorEdad, mensajeExitoEdad, &aux.edad, 17, 56) == 0)
 							{
-								if(pedirInt(mensajeDireccion, mensajeErrorDireccion, mensajeExitoDireccion, &aux.direccion, 1 ,100) == 0)
+								if(pedirCodigo(mensajeDireccion, aux.direccion) == 0)
 								{
 									printf(mensajeCargaCompleta);
 									aux.id = id;
@@ -429,7 +431,7 @@ int modificarCensista(Censista *listaCensista, int tamanioDelArray, char mensaje
 			 printf(MODIFICAR_EDAD);
 			 printf(MODIFICAR_DIRECCION);
 			 printf(mensajeOpcion);
-			 pedirInt(mensajeModificar, mensajeErrorModificar, mensajeExitoModificar, &opcion, 0,6);
+			 pedirInt(mensajeModificar, mensajeErrorModificar, mensajeExitoModificar, &opcion, 0,8);
 
 			 switch(opcion)
 			 {
@@ -469,7 +471,7 @@ int modificarCensista(Censista *listaCensista, int tamanioDelArray, char mensaje
 			 	 	 }
 				 break;
 
-			 case 7:if(modificarDireccion(mensajeModificarDireccion, mensajeErrorModificarDireccion, mensajeExitoModificarDireccion, &listaCensista[indice])
+			 case 7:if(modificarDireccion(mensajeModificarDireccion, &listaCensista[indice])
 					 != -1)
 			 	 	 {
 				 	 	 retorno = 0;
@@ -585,17 +587,104 @@ int modificarEdad (char mensajeModificar [TAM_STR], char mensajeErrorModificar [
 }
 
 
-int modificarDireccion(char mensajeModificar [TAM_STR], char mensajeErrorModificar [TAM_STR], char mensajeExitoModificar [TAM_STR], Censista *censista)
+int modificarDireccion(char mensajeModificar [TAM_STR], Censista *censista)
 {
 	int retorno;
-	int direccionModificada;
+	char direccionModificada [TAM_STR];
 
 	retorno = -1;
 
-	retorno = pedirInt(mensajeModificar, mensajeErrorModificar, mensajeExitoModificar, &direccionModificada, 1, 100);
+	retorno = pedirCodigo(mensajeModificar, direccionModificada);
 	if(retorno != -1)
 	{
-		censista->direccion = direccionModificada;
+		strcpy(censista->direccion, direccionModificada);
+	}
+
+	return retorno;
+}
+
+int buscarLibreZona(Zona *listaZona, int tamanioDelArray)
+{
+	int retorno;
+	int i;
+
+	retorno = -1;
+
+	for(i = 0; i < tamanioDelArray; i++)
+	{
+		if(listaZona[i].isEmpty != 0)
+		{
+			retorno = i;
+			break;
+		}
+	}
+
+	return retorno;
+}
+
+int darAltaZona (Zona *listaZona, int tamanioDelArray, char mensajeRadio [TAM_STR], char mensajeLocalidad [TAM_STR], char mensajeErrorLocalidad [TAM_STR],
+			char mensajeExitoLocalidad [TAM_STR], char mensajeEstado [TAM_STR], char mensajeErrorEstado [TAM_STR], char mensajeExitoEstado [TAM_STR],
+			char mensajeCargaZonaCompleta [TAM_STR], int id)
+{
+	int retorno;
+	int indice;
+	Zona aux;
+
+	retorno = 0;
+	indice = buscarLibreZona(listaZona, tamanioDelArray);
+
+	if(indice != -1)
+	{
+		if(pedirCodigo(mensajeRadio, aux.radio) == 0)
+		{
+			if(pedirInt(mensajeLocalidad, mensajeErrorLocalidad, mensajeExitoLocalidad, &aux.localidad, 1, 16) == 0)
+			{
+				if(pedirInt(mensajeEstado, mensajeErrorEstado, mensajeExitoEstado, &aux.estado, 1, 16) == 0)
+				{
+					printf(mensajeCargaZonaCompleta);
+					aux.id = id;
+					aux.isEmpty = 0;
+					agregarZona(&listaZona[indice], aux);
+					retorno = 0;
+				}
+			}
+		}
+	}
+
+
+	return retorno;
+}
+
+int asignarZona(Zona *listaZona, int tamanioArrayZona, Censista *listaCensista, int tamanioArrayCensista, char mensajeZona [TAM_STR],
+		char mensajeErrorZona [TAM_STR], char mensajeExitoZona [TAM_STR], char mensajeCensista [TAM_STR], char mensajeErrorCensista [TAM_STR],
+		char mensajeExitoCensista [TAM_STR])
+{
+	int retorno;
+	int idZonaAsignar;
+	int indiceZona;
+	int idCensistaAsignar;
+	int indiceCensista;
+
+	retorno = 1;
+
+	mostrarZonas(listaZona);
+
+	if(pedirInt(mensajeZona, mensajeErrorZona, mensajeExitoZona, &idZonaAsignar, 1, 15) == 0)
+	{
+		indiceZona = buscarZonaPorId(listaZona, tamanioArrayZona, idZonaAsignar);
+		if(indiceZona  != -1)
+		{
+			mostrarCensistas(listaCensista);
+			if(pedirInt(mensajeCensista, mensajeErrorCensista, mensajeExitoCensista, &idCensistaAsignar, 1, 100) == 0)
+			{
+				indiceCensista = buscarCensistaPorId(listaCensista,tamanioArrayCensista, idCensistaAsignar);
+				if(indiceCensista != -1)
+				{
+					retorno = 0;
+					listaCensista[indiceCensista].zona = listaZona[indiceZona].id;
+				}
+			}
+		}
 	}
 
 	return retorno;

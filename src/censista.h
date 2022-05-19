@@ -22,7 +22,8 @@ struct
  Fecha fechaDeNacimiento;
  int edad;
  int estado;
- int direccion;
+ int zona;
+ char direccion [TAM_STR];
  int isEmpty;
 }typedef Censista;
 
@@ -37,5 +38,7 @@ int encontrarCensistaPorId(Censista *listaCensista, int tamanioDelArray, int id)
 void mostrarCensistas(Censista listaCensista [TAMANIO_ARRAY_CENSISTAS]);
 
 void mostrarUnCensista(Censista censista);
+
+int buscarCensistaPorId(Censista *listaCensista, int tamanioArrayCensista, int idCensista);
 
 #endif /* CENSISTA_H_ */
